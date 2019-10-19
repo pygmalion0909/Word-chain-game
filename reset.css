@@ -1,0 +1,16 @@
+body{
+  margin: 0;
+  padding: 0;
+  background: rgb(220, 20, 60);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+h1, h2, h3, h4, h5, h6, p, div, span, a, button, input, label, ul, ol, li, img{
+  padding: 0;
+  margin: 0;
+  line-height: 1.3em;
+  font-size: 16px;
+  font-weight: normal;
+  list-style: none;
+  text-decoration: none;
+  color: black;
+}

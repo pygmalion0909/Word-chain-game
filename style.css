@@ -1,0 +1,127 @@
+/* warp */
+#warp{
+  width: 80%;
+  margin: 0 auto;
+}
+/* title */
+h1{
+	text-align: center;
+	color: azure;
+	font-size: 50px;
+	letter-spacing: 5px;
+}
+/* writeWord_box  */
+#writeWord_box{
+	margin: 13px auto;
+	text-align: center;
+}
+#word_input{
+	width: 350px;
+	height: 100px;
+	text-align: center;
+	font-size: 40px;
+	font-weight: bold;
+	border-radius: 3px;
+	border: none;
+}
+#word_input::placeholder{
+	font-size: 30px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+/* playerSet_box */
+#playerSet_box{
+	text-align: center;
+}
+#playInfor{
+  width: 600px;
+  margin: 0 auto;
+}
+#playInfor h2{
+  color: rgb(37, 36, 36);
+  font-size: 25px;
+	font-weight: bold;
+	padding: 20px;
+}
+#playInfor p{ 
+  color: rgb(37, 36, 36);
+  font-weight: 700; 
+  text-align: left;
+  margin-left: 160px;
+  padding: 5px 0;
+}
+#player_number{
+	width: 30px;
+	height: 30px;
+	border-radius: 3px;
+	border: none;
+	padding-left: 6px;
+	box-sizing: border-box;
+}
+#player_number_btn{
+	background: dodgerblue;
+	width: 120px;
+	height: 50px;
+	margin-left: 10px;
+	border-radius: 3px;
+	border: 1px solid rgb(13, 67, 121);
+	cursor: pointer;
+	font-weight: bold;
+}
+/* player_nicknameBox */
+#player_nicknameBox{
+	width: 750px;
+	margin: 10px auto;
+}
+#player_nicknameBox input{
+	width: 150px;
+	height: 30px;
+	border: none;
+	border-radius: 3px;
+	padding-left: 20px;
+	box-sizing: border-box;
+	margin: 5px 0;
+  font-size: 19px;
+}
+#player_nicknameBox span{
+	font-size: 20px;
+	padding: 20px 0;
+	margin-left: 10px;
+	font-weight: 300;
+}
+#player_nicknameBox button{
+  background: rgb(37, 36, 36);
+  color: crimson;
+	margin-left: 50px;
+	width: 200px;
+	height: 50px;
+	border-radius: 3px;
+	border: none;
+	cursor: pointer;
+	font-weight: bold;
+}
+/* gameTurn_box */
+#gameTurn_box{
+  width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+/* gameTurn_box playerList_box */
+#playerList_box{
+  font-size: 19px;
+  font-weight: 550;
+  text-align: center;
+}
+#playerList_box span{
+  font-size: 19px;
+}
+/* gameTurn_box displayTurn_box */
+#displayTurn_box{
+  font-size: 50px;
+  font-weight: 900;
+  color: rgb(219, 219, 219);
+}
+/* displayWord_box */
+#displayWord_box{
+  background: rgba(9, 93, 65, 0.267);
+}

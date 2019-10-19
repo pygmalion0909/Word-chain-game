@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,300,400,500,700,900&display=swap&subset=korean" rel="stylesheet">
+	<link rel="stylesheet" href="reset.css">
+	<link rel="stylesheet" href="style.css">
+	<title>Document</title>
+</head>
+<body>
+  <div id="warp">
+    <!-- title -->
+    <h1>Random 끝말잇기 게임</h1>
+    <!-- write word -->
+    <div id="writeWord_box">
+      <form action="" id="word_form">
+        <input type="text" placeholder="game close!" id="word_input" readonly>
+      </form>
+    </div>
+    <!-- player set -->
+    <div id="playerSet_box">
+      <div id="playInfor">
+        <h2>게임 방식은 다음과 같습니다.</h2>
+        <p>1.플레이 인원을 정한다.</p>
+        <p>2.닉네임을 정한다.</p>
+        <p>3.매 턴 마다 랜덤으로 순번이 정해진다.</p>
+        <input type="text" id="player_number">
+        <button id="player_number_btn">참가자 인원수</button>
+      </div>
+      <div id="player_nicknameBox"></div>
+    </div>
+    <!-- game turn -->
+    <div id="gameTurn_box">
+      <div id="playerList_box"></div>
+      <div id="displayTurn_box"></div>
+    </div>
+    <!-- display word -->
+    <div id="displayWord_box"></div>
+  </div>
+
+	<script src="main.js"></script>
+</body>
+</html>
