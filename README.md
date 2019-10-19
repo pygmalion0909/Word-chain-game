@@ -7,4 +7,4 @@
 3. 매 턴 마다 랜덤으로 순번이 정해진다.
 
 
-### code refactoring
+### code refactoring branch 입니다.
