@@ -1,122 +1,164 @@
-const player_nickname_Box = document.getElementById('player_nicknameBox');
 const player_number = document.getElementById('player_number');
-const player_number_btn = document.getElementById('player_number_btn');
-const play_content = document.getElementById('displayWord_box');
-const game_turn = document.getElementById('playerList_box');
-const turn = document.getElementById('displayTurn_box');
+const player_nickname_Box = document.getElementById('player_nicknameBox');
 const word_form = document.getElementById('word_form');
 const word_input = document.getElementById('word_input');
-let nickame = [];
-let start_word;
-let answer_word;
-let player_reset = 0;
-let nickame_reset = 0;
+const turn_display = document.getElementById('displayTurn_box');
+let userNickname = [];
+let checkSpaceName = [];
+let standardWord;
+let comparisonWord;
+let turnCount = 0;
+let stopGame = true;
 
-// 닉네임 전부 입력했을때 랜덤으로 턴 알림
-function noticeTurn(){
-  let count = parseInt(Math.random() * nickame.length);
-  turn.textContent = nickame[count] + ' 님 턴 입니다!';
-}
-// 닉네임 설정시 화면에 닉네임 표시
-function noticeNickname(inputLength){
-  let nickname_span = document.createElement('span');
-  if(nickame.length === inputLength.length){
-    player_nickname_Box.innerHTML = '';
-    nickname_span.textContent = 'player List : ' + nickame
-    game_turn.appendChild(nickname_span);
-    word_input.focus();
-    noticeTurn();
-  }else{
-    nickname_span.textContent = '모든 닉네임을 입력하세요!'
-    game_turn.appendChild(nickname_span);
-  }
-}
-// 인원수 뽑아서 닉네임 설정
-function displayNickname(nick_btn){
-  let Nickname_value = player_nickname_Box.querySelectorAll('input');
-  nick_btn.addEventListener('click',function(){
-    Nickname_value.forEach(function(input, index){
-      if(input.value === ""){
-        word_input.readOnly = true;
-        word_input.placeholder = '닉네임 입력 시 열림!';
-        nickame = [];
-        return false;
-      }else{
-        nickame.push(input.value);
-        word_input.readOnly = false;
-        word_input.placeholder = 'Game Start!';
-        input.value = '';
-        game_turn.innerHTML = '';
-      }
-    })
-    noticeNickname(Nickname_value);
-  })
-}
-
-function game_set_number(){
-  let player_total = parseInt(player_number.value);
-  if(player_reset === 0){
-    if(player_total < 2 || isNaN(player_total)){
-      alert('2명 이상 플레이 가능!');
-      player_number.focus();
-      player_number.value = '';
-    }else{
-      player_reset = 1;
-      player_number_btn.textContent = 'Reset';
-      player_number.readOnly = true;
-      const player_name_btn = document.createElement('button');
-      player_name_btn.textContent = '닉네임 설정 후 게임시작!';
-      for(let i = 0; i < player_total; i++){
-        var player_name = document.createElement('input');
-        let player_text = document.createElement('span');
-        player_text.textContent = i + 1 + 'player: ';
-        player_nickname_Box.appendChild(player_text);
-        player_nickname_Box.appendChild(player_name);
-        player_nickname_Box.appendChild(player_name_btn);
-      }
-      displayNickname(player_name_btn);
-      player_number.value = '';
+// 설정모음
+// 닉네임 입력란 만들기 설정
+const makeNicknameObj = {
+  btn : document.createElement('button'),
+  createEl : function(number,targeting){
+    for(let i = 0; i < number; i++){
+      let player_name = document.createElement('input');
+      let player_text = document.createElement('span');
+      player_text.textContent = i + 1 + 'player: ';
+      this.btn.textContent = '닉네임 설정 후 STATR';
+      targeting.appendChild(player_text);
+      targeting.appendChild(player_name);
+      targeting.appendChild(this.btn);
     } 
-  }else{
-    player_number.readOnly = false;
-    word_input.readOnly = true;
-    word_input.placeholder = 'game close!';
-    player_reset = 0;
+  },
+}
+
+// 속성 설정
+propertySet = {
+  bundle : function(target, inner, place, text, tf){
+    target.innerHTML = inner;
+    target.placeholder = place;
+    target.textContent = text;
+    target.readOnly = tf;
+  },
+  falseToggle : function(){
     player_number_btn.textContent = '참가자 인원수';
     player_nickname_Box.innerHTML = '';
-    game_turn.innerHTML = '';
-    turn.textContent = '';
-    play_content.innerHTML = '';
-    start_word = undefined;
-    answer_word = undefined;
-    nickame = [];
-  }
-}
-// 끝말잇기 단어 비교;
-function formSubmit(event){
-  event.preventDefault();
-  answer_word = word_input.value;
-  if(start_word === undefined){
-    start_word = word_input.value
-    play_content.textContent = start_word;
-  }else if(start_word.charAt(start_word.length - 1) === answer_word.charAt(0)){
-    let word_text = document.createElement('span');
-    word_text.textContent = '-' + answer_word;
-    play_content.appendChild(word_text);
-    start_word = answer_word;
-  }else{
-    start_word = undefined;
-    answer_word = undefined;
-    play_content.innerHTML = '';
+    word_input.placeholder = 'game close!';
+    player_number.style.visibility = 'visible';
+    turn_display.textContent = '';
+    displayWord_box.innerHTML = '';
+    userNickname = [];
+    standardWord = null;
+    comparisonWord = null;
     word_input.readOnly = true;
-    word_input.placeholder = 'game end';
-    player_number.focus();
-    alert('마! 니 틀릿다!');
-  }
-  word_input.value = '';
-  noticeTurn();
+    toggleResetBtn = true;
+    turnCount = 0;
+  },
+  trueToggle : function(){
+    player_number_btn.textContent = 'RESET';
+    player_number.style.visibility = 'hidden';
+    toggleResetBtn = false;
+    stopGame = true;
+  },
 }
 
-word_form.addEventListener('submit',formSubmit);
-player_number_btn.addEventListener('click',game_set_number);
+// 게임단어를 화면에 보이기
+function displayWord(){
+  const displayWord_box = document.getElementById('displayWord_box');
+  if(stopGame){
+    displayWord_box.textContent = 'Turn Word : ' + standardWord;
+  }
+}
+
+// 랜덤 턴 알림
+function noticeTurn(){
+  if(stopGame){
+    let randeomTurn = parseInt(Math.random() * checkSpaceName.length);
+    turnCount += 1;
+    turn_display.textContent = `${turnCount}turn : ${checkSpaceName[randeomTurn]}님!`;
+  }
+}
+
+// 시작단어랑 다음 단어 첫글자라 맞는지 확인
+function checkWord(){
+  if(standardWord.charAt(standardWord.length - 1) === comparisonWord.charAt(0)){
+    standardWord = comparisonWord;
+  }else{
+    alert('마! 니 틀릿다! \n 게임이 최기화 됩니다!');
+    propertySet.falseToggle();
+    stopGame = false;
+  }
+}
+
+// 끝말잇기 게임시작 단어 넣기
+function enterWord(event){
+  event.preventDefault();
+  (!standardWord) ? standardWord = word_input.value : (comparisonWord = word_input.value, checkWord());
+  noticeTurn();
+  displayWord();
+  word_input.value = '';
+}
+
+// 게임 단어 넣어서 게임 시작
+word_form.addEventListener('submit', enterWord);
+
+// 게임단어 입력창 활성화 시키기
+function openGame(){
+  propertySet.bundle(word_input, null, 'game start', null, false);
+  word_input.focus();
+}
+
+// 닉네임 화면에 나타내기
+function showNickname(){
+  propertySet.bundle(player_nickname_Box, '', null, checkSpaceName, null);
+}
+
+// 닉네임 모두 입력 여부 and 빈값 체크
+function checkNickname(){
+  checkSpaceName = userNickname.filter(function(element){
+    return element.replace(/(\s*)/g, "");  // 빈공간 빼고 배열에 담는다.
+  })
+  if(checkSpaceName.length === userNickname.length){
+    showNickname();
+    openGame();
+    turn_display.textContent = `Start Player : ${checkSpaceName[0]} 님!! 시작단어를 입력하세요!`;
+  }else{
+    userNickname = [];
+    checkSpaceName = [];
+    propertySet.bundle(word_input, null, '닉네임 전부 입력 시 열림!');
+  }
+}
+
+// 닉네임 배열에 담기(닉네임 저장)
+function saveNickname(){
+  const nickname_input = document.querySelectorAll('#player_nicknameBox > input');
+  nickname_input.forEach(function(input){
+    userNickname.push(input.value);
+  })
+  checkNickname();
+}
+
+// 닉네임 입력란 생성하기
+function makeNicknameInput(number){
+  makeNicknameObj.createEl(number, player_nickname_Box);
+}
+
+// 게임 참가자 2명 이상인지 확인하기
+function checkNumber(){
+  const startNumber = Number(player_number.value);
+  if(startNumber < 2 || isNaN(startNumber)){
+    propertySet.bundle(player_nickname_Box,null,null,'2명 이상 플레이 가능! RESET버튼!');
+  }else{
+    makeNicknameInput(startNumber);
+  }
+}
+
+// 게임 리셋 버튼
+let toggleResetBtn = true;
+
+function SwitchToggle(){
+  (toggleResetBtn) ? (checkNumber(), propertySet.trueToggle()) : propertySet.falseToggle();
+}
+
+// 플레이어 인원 버튼
+player_number_btn.addEventListener('click', SwitchToggle);
+
+// 닉네임 저장 버튼
+makeNicknameObj.btn.addEventListener('click', saveNickname);
+
 
