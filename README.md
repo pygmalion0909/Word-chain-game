@@ -7,3 +7,6 @@
 3. 매 턴 마다 랜덤으로 순번이 정해진다.
 
 ### master에는 최신code를 담고있습니다.
+
+### 구현페이지
+http://pygmalion0220.dothome.co.kr/
